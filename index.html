@@ -7,7 +7,7 @@
 <style>
 :root{--navy:#123054;--blue:#1677ff;--green:#15865b;--red:#df3447;--amber:#d58c18;--bg:#f4f7fb;--line:#dce5ef;--muted:#738399}*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Thai",sans-serif;background:var(--bg);color:#1c2b3f}.wrap{max-width:1600px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;gap:16px;align-items:center}h1{margin:0;color:var(--navy);font-size:27px}.sub{margin-top:5px;color:var(--muted);font-size:12px}.upload{background:var(--navy);color:white;border:0;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer}.status{font-size:11px;color:#65758b;margin-left:8px}.panel,.card{background:#fff;border:1px solid var(--line);box-shadow:0 2px 10px #17365d0b}.panel{border-radius:15px;padding:14px;margin-top:14px}.notice{background:#eef5ff;color:#31547c;border:1px solid #d7e6fb;border-radius:12px;padding:12px 14px;margin-top:14px;font-size:12px}.filters{display:grid;grid-template-columns:repeat(9,minmax(110px,1fr));gap:9px}label{font-size:10px;font-weight:800;color:#62738a}.filterbox{position:relative}.filterSearch{width:100%;margin-top:5px;padding:7px 8px;border:1px solid #d5dfea;border-radius:8px 8px 0 0;background:#f9fbfd;font-size:11px;outline:none}.filterSearch:focus{border-color:#8ab8f5;background:#fff}select{width:100%;margin-top:0;padding:9px;border:1px solid #d5dfea;border-top:0;border-radius:0 0 8px 8px;background:#fff}.datebadge{display:inline-flex;align-items:center;gap:5px;background:#eaf3ff;color:#123054;border:1px solid #cfe2fb;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800;margin-left:8px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.btn{border:0;border-radius:8px;padding:8px 12px;font-weight:800;cursor:pointer}.light{background:#edf3fa;color:#294765}.active{background:var(--navy)!important;color:#fff!important}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.tab{background:#edf3fa;color:#294765;border:0;border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer}.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin:14px 0}.card{border-radius:14px;padding:14px;border-left:5px solid var(--blue)}.card.green{border-left-color:var(--green)}.card.red{border-left-color:var(--red)}.card.amber{border-left-color:var(--amber)}.k{font-size:10px;font-weight:800;color:#6c7d93;text-transform:uppercase}.v{font-size:27px;font-weight:900;color:var(--navy);margin:7px 0 2px}.s{font-size:10px;color:#8995a5}.section{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.section h2{font-size:16px;margin:0}.tablewrap{overflow:auto;max-height:600px;border:1px solid var(--line);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:1320px;font-size:10px}th{position:sticky;top:0;background:#edf3f9;color:#40536a;text-align:left;padding:8px 6px;white-space:nowrap;z-index:2}td{padding:7px 6px;border-top:1px solid #edf1f5}.num{text-align:right;font-weight:800}.bad{color:var(--red);font-weight:900}.good{color:var(--green);font-weight:900}.pill{display:inline-block;padding:2px 6px;border-radius:999px;font-size:9px;font-weight:900}.p-current{background:#edf7f2;color:#157a55}.p-pre{background:#fff7e7;color:#a86600}.p-eol{background:#fff0f2;color:#b52638}.hidden{display:none}.progress{margin-top:8px;height:6px;background:#e8eef5;border-radius:999px;overflow:hidden}.progress>div{height:100%;width:0;background:var(--blue);transition:width .2s}.small{font-size:11px;color:#738399}.brandtag{display:inline-block;background:#eef4fb;color:#123054;border-radius:999px;padding:2px 7px;font-weight:800}@media(max-width:1100px){.filters{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.top{flex-direction:column;align-items:flex-start}}
 </style></head><body><div class="wrap">
-<div class="top"><div><h1>Interbrand Stock & Demo Dashboard</h1><div class="sub">All Interbrand • Auto exclude iPhone & iPad • Upload Daily Stock Excel ได้เอง • ใช้ Latest Stock Date อัตโนมัติ • Model normalized from Submodel</div></div><div><input id="file" type="file" accept=".xlsx,.xls,.xlsb" hidden><button class="upload" id="uploadBtn">↻ Upload / Refresh Data</button><span id="dataDateBadge" class="datebadge">Data as of: -</span><span id="status" class="status">พร้อมรับไฟล์ Daily Stock</span></div></div>
+<div class="top"><div><h1>Interbrand Stock & Demo Dashboard</h1><div class="sub">All Interbrand • Auto exclude iPhone & iPad • Upload Daily Stock Excel ได้เอง • ใช้ Latest Stock Date อัตโนมัติ</div></div><div><input id="file" type="file" accept=".xlsx,.xls,.xlsb" hidden><button class="upload" id="uploadBtn">↻ Upload / Refresh Data</button> <button class="btn light" id="centralBtn" title="สำหรับ Admin: สร้างไฟล์ข้อมูลกลางหลัง Upload Excel">Download Central Data</button><span id="dataDateBadge" class="datebadge">Data as of: -</span><span id="status" class="status">พร้อมรับไฟล์ Daily Stock</span></div></div>
 <div id="welcome" class="notice"><b>เริ่มใช้งาน:</b> กด <b>Upload / Refresh Data</b> แล้วเลือกไฟล์ Daily Stock ระบบจะอ่าน Sheet <b>DATA</b> (ถ้ามี), เลือกวันที่ล่าสุด และตัด iPhone / iPad ออกอัตโนมัติ ข้อมูลประมวลผลใน Browser เท่านั้น ไม่ได้อัปโหลด Excel ขึ้น GitHub</div>
 <div id="progressBox" class="panel hidden"><b id="progressText">กำลังอ่านไฟล์…</b><div class="progress"><div id="bar"></div></div></div>
 <div id="app" class="hidden"><div class="tabs"><button class="tab active" data-view="ALL">Overview</button><button class="tab" data-view="STOCK">Stock</button><button class="tab" data-view="DEMO">Demo</button><button class="tab" data-view="OOS">Demo + OOS</button></div>
@@ -21,7 +21,7 @@
 <label class="filterbox">Product Status<input class="filterSearch" id="productstatusSearch" placeholder="Search Status"><select id="productstatus"></select></label>
 <label class="filterbox">Shop Code<input class="filterSearch" id="shopcodeSearch" placeholder="Search Shop Code"><select id="shopcode"></select></label>
 <label class="filterbox">Shop Name<input class="filterSearch" id="shopnameSearch" placeholder="Search Shop Name"><select id="shopname"></select></label>
-</div><div class="actions"><button class="btn light" id="resetBtn">Reset Filters</button><button class="btn light statusBtn" data-status="CURRENT">Current</button><button class="btn light statusBtn" data-status="PRE-EOL">Pre-EOL</button><button class="btn light statusBtn" data-status="EOL">EOL</button><button class="btn light" id="exportBtn">Export Filtered CSV</button></div></div>
+</div><div class="actions"><button class="btn light" id="resetBtn">Reset Filters</button><button class="btn light statusBtn" data-status="CURRENT">Current</button><button class="btn light statusBtn" data-status="PRE-EOL">Pre-EOL</button><button class="btn light statusBtn" data-status="EOL">EOL</button><button class="btn light" id="exportBtn">Export Filtered Excel</button></div></div>
 <div class="cards"><div class="card"><div class="k">Total Sellable Stock</div><div class="v" id="k1">0</div><div class="s">Latest stock date</div></div><div class="card green"><div class="k">Stores with Stock</div><div class="v" id="k2">0</div><div class="s">Unique shops stock &gt; 0</div></div><div class="card"><div class="k">Demo Required Stores</div><div class="v" id="k3">0</div><div class="s">PRODUCT_TYPE = DEMO</div></div><div class="card red"><div class="k">Demo OOS Stores</div><div class="v" id="k4">0</div><div class="s">Demo exists + Sellable = 0</div></div><div class="card amber"><div class="k">EOL / Pre-EOL Stock</div><div class="v" id="k5">0</div><div class="s">Sellable stock</div></div><div class="card"><div class="k">PC Stores</div><div class="v" id="k6">0</div><div class="s">PC = YES</div></div></div>
 <div class="panel"><div class="section"><h2 id="tableTitle">Interbrand Stock by Store & Model</h2><div><span class="small" id="asof"></span> &nbsp; <b id="count">0 rows</b></div></div><div class="tablewrap"><table><thead><tr><th>Brand</th><th>Shop Code</th><th>Shop Name</th><th>Area</th><th>Shop Type</th><th>PC</th><th>Model</th><th>Submodel / Capacity</th><th>Demo Qty</th><th>Sellable Stock</th><th>Product Status</th><th>Stock Status</th></tr></thead><tbody id="tbody"></tbody></table></div></div></div></div>
 <script>
@@ -30,7 +30,91 @@ const aliases={brand:["CUSTOM_BRAND","BRAND","BRAND_NAME"],model:["MODEL","CUSTO
 let rows=[],filtered=[],view="ALL",latestDate="";const filters=["brand","model","submodel","area","shoptype","pcflag","productstatus","shopcode","shopname"];
 function norm(v){return String(v??"").trim()}function key(v){return norm(v).toUpperCase().replace(/[^A-Z0-9]+/g,"_").replace(/^_|_$/g,"")}function pick(map,name){for(const a of aliases[name])if(map[key(a)]!==undefined)return map[key(a)];return-1}function val(row,i){if(i<0||!row||!row[i])return"";const c=row[i];return c.v!==undefined?c.v:c}function yes(v){return["Y","YES","1","TRUE","DEMO","PC","ACTIVE"].includes(norm(v).toUpperCase())}function statusNorm(v){const x=norm(v).toUpperCase().replace(/_/g,"-");if(x.includes("PRE")&&x.includes("EOL"))return"PRE-EOL";if(x.includes("EOL"))return"EOL";return x||"CURRENT"}function inferModel(submodel,brand){let x=norm(submodel).replace(/\s+/g," ");if(!x)return"";x=x.replace(/\s+\d+\s*\/\s*\d+\s*(?:GB|TB)\b.*$/i,"");x=x.replace(/\s+\d+\s*(?:GB|TB)\b.*$/i,"");x=x.replace(/\s+(?:RAM|ROM)\s*[:=]?\s*\d+.*$/i,"");return x.trim()||norm(submodel)}
 function parseDate(v){if(v instanceof Date&&!isNaN(v))return v;if(typeof v==="number"&&window.XLSX?.SSF){const d=XLSX.SSF.parse_date_code(v);if(d)return new Date(d.y,d.m-1,d.d)}const s=norm(v);if(!s)return null;const d=new Date(s);if(!isNaN(d))return d;const m=s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);if(m){let y=+m[3];if(y>2400)y-=543;return new Date(y,+m[2]-1,+m[1])}return null}function dateKey(v){const d=parseDate(v);return d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`:""}function excluded(o){const t=[o.brand,o.model,o.submodel,o.productType].join(" ").toUpperCase();return/(^|[^A-Z])IPHONE([^A-Z]|$)/.test(t)||/(^|[^A-Z])IPAD([^A-Z]|$)/.test(t)}function setProgress(t,p){$("progressBox").classList.remove("hidden");$("progressText").textContent=t;$("bar").style.width=Math.max(0,Math.min(100,p))+"%"}
-async function loadFile(file){try{setProgress(`กำลังอ่าน ${file.name} (${(file.size/1024/1024).toFixed(1)} MB)…`,8);$("status").textContent="กำลังประมวลผล…";await new Promise(r=>setTimeout(r,30));const data=await file.arrayBuffer();setProgress("กำลังเปิด Excel…",20);const wb=XLSX.read(data,{type:"array",cellDates:true,dense:true});const sheetName=wb.SheetNames.find(n=>n.trim().toUpperCase()==="DATA")||wb.SheetNames[0],ws=wb.Sheets[sheetName];const matrix=ws["!data"]||XLSX.utils.sheet_to_json(ws,{header:1,defval:"",raw:true}).map(r=>r.map(v=>({v})));if(!matrix||matrix.length<2)throw new Error("ไม่พบข้อมูลใน Sheet "+sheetName);const hdr=(matrix[0]||[]).map(c=>key(c?.v!==undefined?c.v:c)),map={};hdr.forEach((h,i)=>{if(h)map[h]=i});const idx={};Object.keys(aliases).forEach(n=>idx[n]=pick(map,n));const missing=["shopcode","shopname","brand","balance"].filter(n=>idx[n]<0);if(missing.length)throw new Error("ไม่พบ Column ที่จำเป็น: "+missing.join(", "));setProgress("กำลังหา Latest Stock Date…",35);let maxDate="";if(idx.date>=0){for(let r=1;r<matrix.length;r++){const dk=dateKey(val(matrix[r],idx.date));if(dk>maxDate)maxDate=dk}}latestDate=maxDate;setProgress("กำลังรวมข้อมูล Interbrand และตัด iPhone / iPad…",48);const agg=new Map();for(let r=1;r<matrix.length;r++){if(r%30000===0){setProgress(`กำลังประมวลผล ${r.toLocaleString()} / ${(matrix.length-1).toLocaleString()} rows…`,48+Math.min(38,r/matrix.length*38));await new Promise(x=>setTimeout(x,0))}const rr=matrix[r];if(latestDate&&idx.date>=0&&dateKey(val(rr,idx.date))!==latestDate)continue;const o={brand:norm(val(rr,idx.brand)),model:norm(val(rr,idx.model)),submodel:norm(val(rr,idx.submodel)),shopcode:norm(val(rr,idx.shopcode)),shopname:norm(val(rr,idx.shopname)),shoptype:norm(val(rr,idx.shoptype)),area:norm(val(rr,idx.area)),pc:norm(val(rr,idx.pc)),status:statusNorm(val(rr,idx.status)),productType:norm(val(rr,idx.productType))};if(o.submodel)o.model=inferModel(o.submodel,o.brand);if(!o.brand||excluded(o))continue;const bal=Number(val(rr,idx.balance))||0,isDemo=(norm(o.productType).toUpperCase()==="DEMO")||(idx.demo>=0&&yes(val(rr,idx.demo))),k=[o.brand,o.shopcode,o.model,o.submodel,o.shoptype,o.area,o.pc,o.status].join("¦");if(!agg.has(k))agg.set(k,{...o,demo:0,stock:0});const a=agg.get(k);if(isDemo)a.demo=1;else a.stock+=bal}rows=[...agg.values()].map(x=>({...x,stockstatus:x.stock>0?"IN STOCK":"OOS"}));setProgress(`เสร็จแล้ว ${rows.length.toLocaleString()} aggregated rows`,100);setTimeout(()=>$("progressBox").classList.add("hidden"),500);$("welcome").classList.add("hidden");$("app").classList.remove("hidden");$("status").textContent=`${file.name} • ${latestDate||"Latest data"} • ${rows.length.toLocaleString()} rows`;initFilters();render()}catch(e){console.error(e);$("status").textContent="อ่านไฟล์ไม่สำเร็จ";setProgress("เกิดข้อผิดพลาด: "+e.message,100);alert("อ่านไฟล์ไม่สำเร็จ\n\n"+e.message+"\n\nถ้าชื่อ Column ต่างจาก Daily Stock เดิม ส่งภาพ Header มาให้ปรับ Mapping ได้ค่ะ")}}
+async function loadFile(file){try{
+setProgress(`กำลังอ่าน ${file.name} (${(file.size/1024/1024).toFixed(1)} MB)…`,8);
+$("status").textContent="กำลังประมวลผล…";await new Promise(r=>setTimeout(r,30));
+const data=await file.arrayBuffer();setProgress("กำลังเปิด Excel…",20);
+const wb=XLSX.read(data,{type:"array",cellDates:true,dense:true});
+const sheetName=wb.SheetNames.find(n=>n.trim().toUpperCase()==="DATA")||wb.SheetNames[0],ws=wb.Sheets[sheetName];
+const matrix=ws["!data"]||XLSX.utils.sheet_to_json(ws,{header:1,defval:"",raw:true}).map(r=>r.map(v=>({v})));
+if(!matrix||matrix.length<2)throw new Error("ไม่พบข้อมูลใน Sheet "+sheetName);
+const hdr=(matrix[0]||[]).map(c=>key(c?.v!==undefined?c.v:c)),map={};hdr.forEach((h,i)=>{if(h)map[h]=i});
+const idx={};Object.keys(aliases).forEach(n=>idx[n]=pick(map,n));
+const missing=["shopcode","shopname","brand","balance"].filter(n=>idx[n]<0);
+if(missing.length)throw new Error("ไม่พบ Column ที่จำเป็น: "+missing.join(", "));
+
+setProgress("กำลังหา Latest FOR SALES Stock Date…",32);
+let maxDate="";
+if(idx.date>=0){
+ for(let r=1;r<matrix.length;r++){
+   const pt=norm(val(matrix[r],idx.productType)).toUpperCase();
+   if(pt!=="FOR SALES")continue;
+   const dk=dateKey(val(matrix[r],idx.date)); if(dk>maxDate)maxDate=dk;
+ }
+}
+latestDate=maxDate;
+
+setProgress("กำลังสร้าง Demo Universe + Latest Sellable Stock…",45);
+const agg=new Map();
+for(let r=1;r<matrix.length;r++){
+ if(r%30000===0){setProgress(`กำลังประมวลผล ${r.toLocaleString()} / ${(matrix.length-1).toLocaleString()} rows…`,45+Math.min(43,r/matrix.length*43));await new Promise(x=>setTimeout(x,0))}
+ const rr=matrix[r];
+ const productType=norm(val(rr,idx.productType)).toUpperCase();
+ const rowDate=idx.date>=0?dateKey(val(rr,idx.date)):"";
+ const isDemoRow=productType==="DEMO";
+ const isSalesRow=productType==="FOR SALES";
+ // Demo = universe ไม่ตัดด้วย Stock Date; Sellable = latest date only.
+ if(!isDemoRow && !(isSalesRow && (!latestDate || rowDate===latestDate)))continue;
+
+ const o={
+   brand:norm(val(rr,idx.brand)),model:norm(val(rr,idx.model)),submodel:norm(val(rr,idx.submodel)),
+   shopcode:norm(val(rr,idx.shopcode)),shopname:norm(val(rr,idx.shopname)),
+   shoptype:norm(val(rr,idx.shoptype)),area:norm(val(rr,idx.area)),pc:norm(val(rr,idx.pc)),
+   status:statusNorm(val(rr,idx.status)),productType
+ };
+ // Normalize model from submodel consistently so DEMO and FOR SALES join to the same model.
+ if(o.submodel)o.model=inferModel(o.submodel,o.brand);
+ if(!o.brand||excluded(o)||!o.shopcode||!o.submodel)continue;
+
+ const bal=Number(val(rr,idx.balance))||0;
+ const k=[o.brand,o.shopcode,o.model,o.submodel].join("¦");
+ if(!agg.has(k))agg.set(k,{...o,demo:0,stock:0});
+ const a=agg.get(k);
+ // Keep useful store metadata from either side.
+ for(const f of ["shopname","shoptype","area","pc","status"])if(!a[f]&&o[f])a[f]=o[f];
+ if(isDemoRow)a.demo=1;
+ if(isSalesRow)a.stock+=bal;
+}
+rows=[...agg.values()].map(x=>({...x,stockstatus:x.stock>0?"IN STOCK":"OOS"}));
+setProgress(`เสร็จแล้ว ${rows.length.toLocaleString()} aggregated rows`,100);
+setTimeout(()=>$("progressBox").classList.add("hidden"),500);
+$("welcome").classList.add("hidden");$("app").classList.remove("hidden");
+$("status").textContent=`${file.name} • ${latestDate||"Latest data"} • ${rows.length.toLocaleString()} rows`;
+initFilters();render();
+}catch(e){console.error(e);$("status").textContent="อ่านไฟล์ไม่สำเร็จ";setProgress("เกิดข้อผิดพลาด: "+e.message,100);alert("อ่านไฟล์ไม่สำเร็จ\n\n"+e.message)}}
+
+async function loadCentralData(){
+ try{
+   const res=await fetch("data.json?ts="+Date.now(),{cache:"no-store"});
+   if(!res.ok)throw new Error("no central data");
+   const d=await res.json();
+   if(!Array.isArray(d.rows)||!d.rows.length)throw new Error("empty central data");
+   rows=d.rows; latestDate=d.latestDate||"";
+   $("welcome").classList.add("hidden");$("app").classList.remove("hidden");
+   $("status").textContent=`Shared Central Data • ${latestDate||"Latest"} • ${rows.length.toLocaleString()} rows`;
+   initFilters();restoreFilters();render();
+ }catch(e){
+   $("status").textContent="ยังไม่มี Central Data • Admin สามารถ Upload Daily Stock ได้";
+ }
+}
+
+function downloadCentralData(){
+ if(!rows.length){alert("กรุณา Upload Daily Stock ก่อน");return}
+ const payload={latestDate,generatedAt:new Date().toISOString(),rows};
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(new Blob([JSON.stringify(payload)],{type:"application/json"}));
+ a.download="data.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
 const filterField={brand:"brand",model:"model",submodel:"submodel",area:"area",shoptype:"shoptype",pcflag:"pc",productstatus:"status",shopcode:"shopcode",shopname:"shopname"};
 function baseForOptions(exceptId){return rows.filter(r=>filters.every(id=>id===exceptId||$(id).value==="All"||r[filterField[id]]===$(id).value))}
@@ -38,6 +122,28 @@ function fillSelect(id,keep=true){const s=$(id),field=filterField[id],cur=keep?(
 function refreshCascades(changedId){const order=["brand","model","submodel","area","shoptype","pcflag","productstatus","shopcode","shopname"],i=order.indexOf(changedId);order.forEach((id,j)=>{if(j>i||changedId==="brand"&&["model","submodel"].includes(id)||changedId==="model"&&id==="submodel")fillSelect(id,true)})}
 function initFilters(){filters.forEach(id=>{if($(id+"Search"))$(id+"Search").value=""});filters.forEach(id=>fillSelect(id,false))}
 function apply(){filtered=rows.filter(r=>(view!=="STOCK"||r.stock>0)&&(view!=="DEMO"||r.demo>0)&&(view!=="OOS"||r.demo>0&&r.stock<=0)&&($("brand").value==="All"||r.brand===$("brand").value)&&($("model").value==="All"||r.model===$("model").value)&&($("submodel").value==="All"||r.submodel===$("submodel").value)&&($("area").value==="All"||r.area===$("area").value)&&($("shoptype").value==="All"||r.shoptype===$("shoptype").value)&&($("pcflag").value==="All"||r.pc===$("pcflag").value)&&($("productstatus").value==="All"||r.status===$("productstatus").value)&&($("shopcode").value==="All"||r.shopcode===$("shopcode").value)&&($("shopname").value==="All"||r.shopname===$("shopname").value))}
-function render(){apply();const f=filtered;$("k1").textContent=fmt(f.reduce((s,r)=>s+r.stock,0));$("k2").textContent=fmt(new Set(f.filter(r=>r.stock>0).map(r=>r.shopcode)).size);$("k3").textContent=fmt(new Set(f.filter(r=>r.demo>0).map(r=>r.shopcode)).size);$("k4").textContent=fmt(new Set(f.filter(r=>r.demo>0&&r.stock<=0).map(r=>r.shopcode)).size);$("k5").textContent=fmt(f.filter(r=>r.status==="EOL"||r.status==="PRE-EOL").reduce((s,r)=>s+r.stock,0));$("k6").textContent=fmt(new Set(f.filter(r=>yes(r.pc)).map(r=>r.shopcode)).size);$("count").textContent=fmt(f.length)+" rows";$("asof").textContent=latestDate?"Data as of "+latestDate:"";$("dataDateBadge").textContent=latestDate?"Data as of: "+latestDate:"Data as of: -";$("tableTitle").textContent=view==="OOS"?"Demo + OOS by Store & Model":view==="DEMO"?"Demo by Store & Model":view==="STOCK"?"Stock by Store & Model":"Interbrand Stock by Store & Model";const show=f.slice(0,3000);$("tbody").innerHTML=show.map(r=>`<tr><td><span class="brandtag">${esc(r.brand)}</span></td><td>${esc(r.shopcode)}</td><td>${esc(r.shopname)}</td><td>${esc(r.area)}</td><td>${esc(r.shoptype)}</td><td>${esc(r.pc)}</td><td><b>${esc(r.model)}</b></td><td>${esc(r.submodel)}</td><td class="num ${r.demo>0?"good":""}">${fmt(r.demo)}</td><td class="num ${r.stock<=0?"bad":""}">${fmt(r.stock)}</td><td><span class="pill ${r.status==="EOL"?"p-eol":r.status==="PRE-EOL"?"p-pre":"p-current"}">${esc(r.status)}</span></td><td class="${r.stock<=0?"bad":"good"}">${r.stock<=0?"OOS":"IN STOCK"}</td></tr>`).join("");if(f.length>3000)$("count").textContent+=` • showing first 3,000`}
-$("uploadBtn").onclick=()=>$("file").click();$("file").onchange=e=>{if(e.target.files[0])loadFile(e.target.files[0]);e.target.value=""};filters.forEach(id=>{$(id).onchange=()=>{refreshCascades(id);render()};const q=$(id+"Search");if(q)q.oninput=()=>fillSelect(id,true)});$("resetBtn").onclick=()=>{filters.forEach(id=>{$(id).value="All";if($(id+"Search"))$(id+"Search").value=""});view="ALL";document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view==="ALL"));initFilters();render()};document.querySelectorAll(".statusBtn").forEach(b=>b.onclick=()=>{$("productstatus").value=b.dataset.status;render()});document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));render()});$("exportBtn").onclick=()=>{apply();const cols=["brand","shopcode","shopname","area","shoptype","pc","model","submodel","demo","stock","status","stockstatus"],head=["Brand","Shop Code","Shop Name","Area","Shop Type","PC","Model","Submodel","Demo Qty","Sellable Stock","Product Status","Stock Status"],q=v=>'"'+String(v??"").replace(/"/g,'""')+'"',csv='\ufeff'+[head.join(","),...filtered.map(r=>cols.map(c=>q(r[c])).join(","))].join("\n"),a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download=`interbrand_stock_${latestDate||"latest"}.csv`;a.click();URL.revokeObjectURL(a.href)};
+function saveFilters(){try{localStorage.setItem("interbrandFilters",JSON.stringify({view,values:Object.fromEntries(filters.map(id=>[id,$(id).value]))}))}catch(e){}}
+function restoreFilters(){try{const s=JSON.parse(localStorage.getItem("interbrandFilters")||"{}");if(s.view)view=s.view;if(s.values)filters.forEach(id=>{if(s.values[id]){$(id).value=s.values[id];if($(id).value!==s.values[id])$(id).value="All"}});document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view===view))}catch(e){}}
+function render(){apply();saveFilters();const f=filtered;$("k1").textContent=fmt(f.reduce((s,r)=>s+r.stock,0));$("k2").textContent=fmt(new Set(f.filter(r=>r.stock>0).map(r=>r.shopcode)).size);$("k3").textContent=fmt(new Set(f.filter(r=>r.demo>0).map(r=>r.shopcode)).size);$("k4").textContent=fmt(new Set(f.filter(r=>r.demo>0&&r.stock<=0).map(r=>r.shopcode)).size);$("k5").textContent=fmt(f.filter(r=>r.status==="EOL"||r.status==="PRE-EOL").reduce((s,r)=>s+r.stock,0));$("k6").textContent=fmt(new Set(f.filter(r=>yes(r.pc)).map(r=>r.shopcode)).size);$("count").textContent=fmt(f.length)+" rows";$("asof").textContent=latestDate?"Data as of "+latestDate:"";$("dataDateBadge").textContent=latestDate?"Data as of: "+latestDate:"Data as of: -";$("tableTitle").textContent=view==="OOS"?"Demo + OOS by Store & Model":view==="DEMO"?"Demo by Store & Model":view==="STOCK"?"Stock by Store & Model":"Interbrand Stock by Store & Model";const show=f.slice(0,3000);$("tbody").innerHTML=show.map(r=>`<tr><td><span class="brandtag">${esc(r.brand)}</span></td><td>${esc(r.shopcode)}</td><td>${esc(r.shopname)}</td><td>${esc(r.area)}</td><td>${esc(r.shoptype)}</td><td>${esc(r.pc)}</td><td><b>${esc(r.model)}</b></td><td>${esc(r.submodel)}</td><td class="num ${r.demo>0?"good":""}">${fmt(r.demo)}</td><td class="num ${r.stock<=0?"bad":""}">${fmt(r.stock)}</td><td><span class="pill ${r.status==="EOL"?"p-eol":r.status==="PRE-EOL"?"p-pre":"p-current"}">${esc(r.status)}</span></td><td class="${r.stock<=0?"bad":"good"}">${r.stock<=0?"OOS":"IN STOCK"}</td></tr>`).join("");if(f.length>3000)$("count").textContent+=` • showing first 3,000`}
+$("uploadBtn").onclick=()=>$("file").click();$("file").onchange=e=>{if(e.target.files[0])loadFile(e.target.files[0]);e.target.value=""};filters.forEach(id=>{$(id).onchange=()=>{refreshCascades(id);render()};const q=$(id+"Search");if(q)q.oninput=()=>fillSelect(id,true)});$("resetBtn").onclick=()=>{filters.forEach(id=>{$(id).value="All";if($(id+"Search"))$(id+"Search").value=""});view="ALL";document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view==="ALL"));initFilters();render()};document.querySelectorAll(".statusBtn").forEach(b=>b.onclick=()=>{$("productstatus").value=b.dataset.status;render()});document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));render()});$("exportBtn").onclick=()=>{apply();
+ const data=filtered.map(r=>({
+  "Brand":r.brand,"Shop Code":r.shopcode,"Shop Name":r.shopname,"Area":r.area,"Shop Type":r.shoptype,"PC":r.pc,
+  "Model":r.model,"Submodel / Capacity":r.submodel,"Demo Qty":r.demo,"Sellable Stock":r.stock,
+  "Product Status":r.status,"Stock Status":r.stockstatus
+ }));
+ const wb=XLSX.utils.book_new();
+ const ws=XLSX.utils.json_to_sheet(data);
+ XLSX.utils.book_append_sheet(wb,ws,"Filtered Data");
+ const summary=[
+  ["Interbrand Stock & Demo Dashboard",""],["Data as of",latestDate],
+  ["Filtered Rows",filtered.length],
+  ["Total Sellable Stock",filtered.reduce((s,r)=>s+r.stock,0)],
+  ["Demo Stores",new Set(filtered.filter(r=>r.demo>0).map(r=>r.shopcode)).size],
+  ["Demo + OOS Stores",new Set(filtered.filter(r=>r.demo>0&&r.stock<=0).map(r=>r.shopcode)).size]
+ ];
+ const sws=XLSX.utils.aoa_to_sheet(summary);XLSX.utils.book_append_sheet(wb,sws,"Summary");
+ XLSX.writeFile(wb,`Interbrand_Stock_Demo_${latestDate||"latest"}.xlsx`);
+};
+$("centralBtn").onclick=downloadCentralData;
+loadCentralData();
 </script></body></html>
