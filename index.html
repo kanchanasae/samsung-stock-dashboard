@@ -33,7 +33,7 @@
 <label class="filterbox">Shop Name<input class="filterSearch" id="shopnameSearch" placeholder="Search Shop Name"><select id="shopname"></select></label>
 </div><div class="actions"><button class="btn light btn-reset" id="resetBtn">Reset Filters</button><button class="btn light statusBtn btn-current" data-status="CURRENT">Current</button><button class="btn light statusBtn btn-pre" data-status="PRE-EOL">Pre-EOL</button><button class="btn light statusBtn btn-eol" data-status="EOL">EOL</button><button class="btn light btn-export" id="exportBtn">Export Filtered Excel</button></div></div>
 <div class="cards"><div class="card"><div class="k">Total Sellable Stock</div><div class="v" id="k1">0</div><div class="s">Latest stock date</div></div><div class="card green"><div class="k">Stores with Stock</div><div class="v" id="k2">0</div><div class="s">Unique shops stock &gt; 0</div></div><div class="card"><div class="k">Demo Required Stores</div><div class="v" id="k3">0</div><div class="s">PRODUCT_TYPE = DEMO</div></div><div class="card red"><div class="k">Demo OOS Stores</div><div class="v" id="k4">0</div><div class="s">Demo exists + Sellable = 0</div></div><div class="card amber"><div class="k">EOL / Pre-EOL Stock</div><div class="v" id="k5">0</div><div class="s">Sellable stock</div></div><div class="card"><div class="k">PC Stores</div><div class="v" id="k6">0</div><div class="s">PC = YES</div></div></div>
-<div class="panel"><div class="section"><h2 id="tableTitle">Interbrand Stock by Store & Model</h2><div><span class="small" id="asof"></span> &nbsp; <b id="count">0 rows</b></div></div><div class="tablewrap"><table><thead><tr><th>Brand</th><th>Shop Code</th><th>Shop Name</th><th>Area</th><th>Shop Type</th><th>PC</th><th>Model</th><th>Submodel / Capacity</th><th>Demo Qty</th><th>Sellable Stock</th><th>Product Status</th><th>Stock Status</th></tr></thead><tbody id="tbody"></tbody></table></div></div></div></div>
+<div class="panel"><div class="section"><h2 id="tableTitle">Interbrand Stock by Store & Model</h2><div><span class="small" id="asof"></span> &nbsp; <b id="count">0 rows</b></div></div><div class="tablewrap"><table><thead><tr><th>Brand</th><th>Shop Code</th><th>Shop Name</th><th>Area</th><th>Shop Type</th><th>PC</th><th>Model</th><th>Demo Qty</th><th>Sellable Stock</th><th>Product Status</th><th>Stock Status</th></tr></thead><tbody id="tbody"></tbody></table></div></div></div></div>
 <script>
 "use strict";const $=id=>document.getElementById(id),fmt=n=>(Number(n)||0).toLocaleString("en-US");
 const aliases={brand:["CUSTOM_BRAND","BRAND","BRAND_NAME"],model:["MODEL","CUSTOM_MODEL","MODEL_NAME"],submodel:["CUSTOM_SUBMODEL","SUBMODEL","SUB_MODEL","PRODUCT_DESC","PRODUCT_DESCRIPTION"],shopcode:["SHOP_CODE","SHOPCODE","STORE_CODE"],shopname:["SHOP_NAME","SHOPNAME","STORE_NAME"],shoptype:["SHOP_TYPE","SHOPTYPE","STORE_TYPE"],area:["ZONE","AREA","REGION","AREA_NAME"],pc:["PC","PC_FLAG","PC_STATUS"],status:["PRODUCT_STATUS","STATUS","PRODUCTSTATUS"],balance:["BALANCE","STOCK_QTY","QTY","SHOP_QTY","ON_HAND"],date:["STOCK_DATE","DATE","DATA_DATE","AS_OF_DATE"],demo:["DEMO_FLAG","DEMO","IS_DEMO","DEMO_STATUS"],productType:["PRODUCT_TYPE","TYPE","CATEGORY","PRODUCT_CATEGORY"]};
@@ -134,11 +134,50 @@ function initFilters(){filters.forEach(id=>{if($(id+"Search"))$(id+"Search").val
 function apply(){filtered=rows.filter(r=>(view!=="STOCK"||r.stock>0)&&(view!=="DEMO"||r.demo>0)&&(view!=="OOS"||r.demo>0&&r.stock<=0)&&($("brand").value==="All"||r.brand===$("brand").value)&&($("model").value==="All"||r.model===$("model").value)&&($("submodel").value==="All"||r.submodel===$("submodel").value)&&($("area").value==="All"||r.area===$("area").value)&&($("shoptype").value==="All"||r.shoptype===$("shoptype").value)&&($("pcflag").value==="All"||r.pc===$("pcflag").value)&&($("productstatus").value==="All"||r.status===$("productstatus").value)&&($("shopcode").value==="All"||r.shopcode===$("shopcode").value)&&($("shopname").value==="All"||r.shopname===$("shopname").value))}
 function saveFilters(){try{localStorage.setItem("interbrandFilters",JSON.stringify({view,values:Object.fromEntries(filters.map(id=>[id,$(id).value]))}))}catch(e){}}
 function restoreFilters(){try{const s=JSON.parse(localStorage.getItem("interbrandFilters")||"{}");if(s.view)view=s.view;if(s.values)filters.forEach(id=>{if(s.values[id]){$(id).value=s.values[id];if($(id).value!==s.values[id])$(id).value="All"}});document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view===view))}catch(e){}}
-function render(){apply();saveFilters();const f=filtered;$("k1").textContent=fmt(f.reduce((s,r)=>s+r.stock,0));$("k2").textContent=fmt(new Set(f.filter(r=>r.stock>0).map(r=>r.shopcode)).size);$("k3").textContent=fmt(new Set(f.filter(r=>r.demo>0).map(r=>r.shopcode)).size);$("k4").textContent=fmt(new Set(f.filter(r=>r.demo>0&&r.stock<=0).map(r=>r.shopcode)).size);$("k5").textContent=fmt(f.filter(r=>r.status==="EOL"||r.status==="PRE-EOL").reduce((s,r)=>s+r.stock,0));$("k6").textContent=fmt(new Set(f.filter(r=>yes(r.pc)).map(r=>r.shopcode)).size);$("count").textContent=fmt(f.length)+" rows";$("asof").textContent=latestDate?"Data as of "+latestDate:"";$("dataDateBadge").textContent=latestDate?"Data as of: "+latestDate:"Data as of: -";$("tableTitle").textContent=view==="OOS"?"Demo + OOS by Store & Model":view==="DEMO"?"Demo by Store & Model":view==="STOCK"?"Stock by Store & Model":"Interbrand Stock by Store & Model";const show=f.slice(0,3000);$("tbody").innerHTML=show.map(r=>`<tr><td><span class="brandtag">${esc(r.brand)}</span></td><td>${esc(r.shopcode)}</td><td>${esc(r.shopname)}</td><td>${esc(r.area)}</td><td>${esc(r.shoptype)}</td><td>${esc(r.pc)}</td><td><b>${esc(r.model)}</b></td><td>${esc(r.submodel)}</td><td class="num ${r.demo>0?"good":""}">${fmt(r.demo)}</td><td class="num ${r.stock<=0?"bad":""}">${fmt(r.stock)}</td><td><span class="pill ${r.status==="EOL"?"p-eol":r.status==="PRE-EOL"?"p-pre":"p-current"}">${esc(r.status)}</span></td><td class="${r.stock<=0?"bad":"good"}">${r.stock<=0?"OOS":"IN STOCK"}</td></tr>`).join("");if(f.length>3000)$("count").textContent+=` • showing first 3,000`}
+function aggregateStoreModel(list){
+ const m=new Map();
+ for(const r of list){
+   const k=[r.brand,r.shopcode,r.model].map(x=>norm(x).toUpperCase()).join("||");
+   if(!m.has(k))m.set(k,{...r,demo:0,stock:0,_demo:false,_statuses:new Set()});
+   const a=m.get(k);
+   // Demo requirement is one requirement per Shop + Model even if multiple capacities exist.
+   if(Number(r.demo)>0)a._demo=true;
+   a.stock+=Number(r.stock)||0;
+   a._statuses.add(statusNorm(r.status));
+   if(!a.shopname&&r.shopname)a.shopname=r.shopname;
+   if(!a.area&&r.area)a.area=r.area;
+   if(!a.shoptype&&r.shoptype)a.shoptype=r.shoptype;
+   if(!a.pc&&r.pc)a.pc=r.pc;
+ }
+ return [...m.values()].map(a=>{
+   a.demo=a._demo?1:0;
+   // Conservative status when capacities differ: EOL > PRE-EOL > CURRENT.
+   a.status=a._statuses.has("EOL")?"EOL":a._statuses.has("PRE-EOL")?"PRE-EOL":"CURRENT";
+   a.stockstatus=a.stock<=0?"OOS":"IN STOCK";
+   delete a._demo; delete a._statuses;
+   return a;
+ });
+}
+function render(){apply();saveFilters();const raw=filtered;const f=aggregateStoreModel(raw);
+$("k1").textContent=fmt(f.reduce((s,r)=>s+r.stock,0));
+$("k2").textContent=fmt(new Set(f.filter(r=>r.stock>0).map(r=>r.shopcode)).size);
+$("k3").textContent=fmt(new Set(f.filter(r=>r.demo>0).map(r=>r.shopcode)).size);
+$("k4").textContent=fmt(new Set(f.filter(r=>r.demo>0&&r.stock<=0).map(r=>r.shopcode)).size);
+$("k5").textContent=fmt(f.filter(r=>r.status==="EOL"||r.status==="PRE-EOL").reduce((s,r)=>s+r.stock,0));
+$("k6").textContent=fmt(new Set(f.filter(r=>yes(r.pc)).map(r=>r.shopcode)).size);
+$("count").textContent=fmt(f.length)+" rows";
+$("asof").textContent=latestDate?"Data as of "+latestDate:"";
+$("dataDateBadge").textContent=latestDate?"Data as of: "+latestDate:"Data as of: -";
+$("tableTitle").textContent=view==="OOS"?"Demo + OOS by Store & Model":view==="DEMO"?"Demo by Store & Model":view==="STOCK"?"Stock by Store & Model":"Interbrand Stock by Store & Model";
+const show=f.slice(0,3000);
+$("tbody").innerHTML=show.map(r=>`<tr><td><span class="brandtag">${esc(r.brand)}</span></td><td>${esc(r.shopcode)}</td><td>${esc(r.shopname)}</td><td>${esc(r.area)}</td><td>${esc(r.shoptype)}</td><td>${esc(r.pc)}</td><td><b>${esc(r.model)}</b></td><td class="num ${r.demo>0?"good":""}">${fmt(r.demo)}</td><td class="num ${r.stock<=0?"bad":""}">${fmt(r.stock)}</td><td><span class="pill ${r.status==="EOL"?"p-eol":r.status==="PRE-EOL"?"p-pre":"p-current"}">${esc(r.status)}</span></td><td class="${r.stock<=0?"bad":"good"}">${r.stock<=0?"OOS":"IN STOCK"}</td></tr>`).join("");
+if(f.length>3000)$("count").textContent+=` • showing first 3,000`
+}
 $("uploadBtn").onclick=()=>$("file").click();$("file").onchange=e=>{if(e.target.files[0])loadFile(e.target.files[0]);e.target.value=""};filters.forEach(id=>{$(id).onchange=()=>{refreshCascades(id);render()};const q=$(id+"Search");if(q)q.oninput=()=>fillSelect(id,true)});$("resetBtn").onclick=()=>{filters.forEach(id=>{$(id).value="All";if($(id+"Search"))$(id+"Search").value=""});view="ALL";document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view==="ALL"));initFilters();render()};document.querySelectorAll(".statusBtn").forEach(b=>b.onclick=()=>{$("productstatus").value=b.dataset.status;render()});document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));render()});$("exportBtn").onclick=()=>{apply();
- const data=filtered.map(r=>({
+ const exportRows=aggregateStoreModel(filtered);
+ const data=exportRows.map(r=>({
   "Brand":r.brand,"Shop Code":r.shopcode,"Shop Name":r.shopname,"Area":r.area,"Shop Type":r.shoptype,"PC":r.pc,
-  "Model":r.model,"Submodel / Capacity":r.submodel,"Demo Qty":r.demo,"Sellable Stock":r.stock,
+  "Model":r.model,"Demo Qty":r.demo,"Sellable Stock":r.stock,
   "Product Status":r.status,"Stock Status":r.stockstatus
  }));
  const wb=XLSX.utils.book_new();
@@ -146,10 +185,10 @@ $("uploadBtn").onclick=()=>$("file").click();$("file").onchange=e=>{if(e.target.
  XLSX.utils.book_append_sheet(wb,ws,"Filtered Data");
  const summary=[
   ["Interbrand Stock & Demo Dashboard",""],["Data as of",latestDate],
-  ["Filtered Rows",filtered.length],
-  ["Total Sellable Stock",filtered.reduce((s,r)=>s+r.stock,0)],
-  ["Demo Stores",new Set(filtered.filter(r=>r.demo>0).map(r=>r.shopcode)).size],
-  ["Demo + OOS Stores",new Set(filtered.filter(r=>r.demo>0&&r.stock<=0).map(r=>r.shopcode)).size]
+  ["Filtered Rows",exportRows.length],
+  ["Total Sellable Stock",exportRows.reduce((s,r)=>s+r.stock,0)],
+  ["Demo Stores",new Set(exportRows.filter(r=>r.demo>0).map(r=>r.shopcode)).size],
+  ["Demo + OOS Stores",new Set(exportRows.filter(r=>r.demo>0&&r.stock<=0).map(r=>r.shopcode)).size]
  ];
  const sws=XLSX.utils.aoa_to_sheet(summary);XLSX.utils.book_append_sheet(wb,sws,"Summary");
  XLSX.writeFile(wb,`Interbrand_Stock_Demo_${latestDate||"latest"}.xlsx`);
