@@ -16,6 +16,21 @@
 .btn-eol:hover{background:#ffe3e6!important}
 .btn-export:hover{background:#dff1e6!important}
 .active{background:var(--navy)!important;color:#fff!important}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.tab{background:#edf3fa;color:#294765;border:0;border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer}.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin:14px 0}.card{border-radius:14px;padding:14px;border-left:5px solid var(--blue)}.card.green{border-left-color:var(--green)}.card.red{border-left-color:var(--red)}.card.amber{border-left-color:var(--amber)}.k{font-size:10px;font-weight:800;color:#6c7d93;text-transform:uppercase}.v{font-size:27px;font-weight:900;color:var(--navy);margin:7px 0 2px}.s{font-size:10px;color:#8995a5}.section{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.section h2{font-size:16px;margin:0}.tablewrap{overflow:auto;max-height:600px;border:1px solid var(--line);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:1320px;font-size:10px}th{position:sticky;top:0;background:#edf3f9;color:#40536a;text-align:left;padding:8px 6px;white-space:nowrap;z-index:2}td{padding:7px 6px;border-top:1px solid #edf1f5}.num{text-align:right;font-weight:800}.bad{color:var(--red);font-weight:900}.good{color:var(--green);font-weight:900}.pill{display:inline-block;padding:2px 6px;border-radius:999px;font-size:9px;font-weight:900}.p-current{background:#edf7f2;color:#157a55}.p-pre{background:#fff7e7;color:#a86600}.p-eol{background:#fff0f2;color:#b52638}.hidden{display:none}.progress{margin-top:8px;height:6px;background:#e8eef5;border-radius:999px;overflow:hidden}.progress>div{height:100%;width:0;background:var(--blue);transition:width .2s}.small{font-size:11px;color:#738399}.brandtag{display:inline-block;background:#eef4fb;color:#123054;border-radius:999px;padding:2px 7px;font-weight:800}.modebadge{display:inline-flex;align-items:center;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900;margin-left:8px}.mode-admin{background:#fff3cd;color:#8a5a00;border:1px solid #f0d889}.mode-viewer{background:#edf7f2;color:#157a55;border:1px solid #bfe5cf}.admin-download{background:#fff3cd!important;color:#8a5a00!important;border:1px solid #f0d889!important}@media(max-width:1100px){.filters{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.top{flex-direction:column;align-items:flex-start}}
+
+.multiSelectHost{position:relative}
+.multiSelectHost select{display:none}
+.multiButton{width:100%;margin-top:0;padding:9px 30px 9px 9px;border:1px solid #d5dfea;border-top:0;border-radius:0 0 8px 8px;background:#fff;text-align:left;cursor:pointer;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:relative}
+.multiButton:after{content:"▾";position:absolute;right:10px;top:8px;color:#51657d}
+.multiButton.hasSelection{background:#eef5ff;color:#123054;font-weight:800}
+.multiMenu{display:none;position:absolute;left:0;right:0;top:100%;z-index:30;background:#fff;border:1px solid #cfdbe8;border-radius:9px;box-shadow:0 8px 24px rgba(18,48,84,.16);max-height:250px;overflow:auto;padding:7px;margin-top:3px;min-width:190px}
+.multiMenu.open{display:block}
+.multiMenuTop{display:flex;gap:6px;position:sticky;top:-7px;background:#fff;padding:5px 0 7px;border-bottom:1px solid #edf1f5;margin-bottom:4px;z-index:2}
+.multiMini{border:1px solid #d5dfea;background:#f7f9fc;color:#40536a;border-radius:6px;padding:4px 7px;font-size:10px;font-weight:800;cursor:pointer}
+.multiOption{display:flex;align-items:center;gap:7px;padding:6px 4px;border-radius:6px;font-size:11px;font-weight:500;color:#2b3d53;cursor:pointer}
+.multiOption:hover{background:#f2f6fb}
+.multiOption input{margin:0}
+.multiEmpty{padding:8px;color:#8a97a8;font-size:11px}
+
 </style></head><body><div class="wrap">
 <div class="top"><div><h1>Interbrand Stock & Demo Dashboard</h1><div class="sub" id="subtitle">All Interbrand • Auto exclude iPhone & iPad • Shared Central Data</div></div><div><input id="file" type="file" accept=".xlsx,.xls,.xlsb" hidden><button class="upload hidden" id="uploadBtn">↻ Upload / Refresh Data</button> <button class="btn light admin-download hidden" id="centralBtn" title="สำหรับ Admin: สร้าง data.json หลัง Upload Excel">⬇ Download Central Data</button><span id="modeBadge" class="modebadge mode-viewer">Viewer</span><span id="dataDateBadge" class="datebadge">Data as of: -</span><span id="status" class="status">กำลังโหลด Central Data…</span></div></div>
 <div id="welcome" class="notice"><b>Viewer Mode:</b> ข้อมูลจะอ่านจาก <b>data.json</b> กลางอัตโนมัติ สามารถ Filter และ Export Excel ได้ โดยไม่สามารถเปลี่ยน Central Data</div>
@@ -150,13 +165,132 @@ function downloadCentralData(){
 }
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
 const filterField={brand:"brand",model:"model",submodel:"submodel",area:"area",shoptype:"shoptype",pcflag:"pc",productstatus:"status",shopcode:"shopcode",shopname:"shopname"};
-function baseForOptions(exceptId){return rows.filter(r=>filters.every(id=>id===exceptId||$(id).value==="All"||r[filterField[id]]===$(id).value))}
-function fillSelect(id,keep=true){const s=$(id),field=filterField[id],cur=keep?(s.value||"All"):"All",term=norm($(id+"Search")?.value).toLowerCase(),base=baseForOptions(id);let opts=[...new Set(base.map(r=>r[field]).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),"th"));if(term)opts=opts.filter(v=>String(v).toLowerCase().includes(term));s.innerHTML='<option value="All">All</option>'+opts.map(v=>`<option>${esc(v)}</option>`).join("");s.value=opts.includes(cur)?cur:"All"}
-function refreshCascades(changedId){const order=["brand","model","submodel","area","shoptype","pcflag","productstatus","shopcode","shopname"],i=order.indexOf(changedId);order.forEach((id,j)=>{if(j>i||changedId==="brand"&&["model","submodel"].includes(id)||changedId==="model"&&id==="submodel")fillSelect(id,true)})}
-function initFilters(){filters.forEach(id=>{if($(id+"Search"))$(id+"Search").value=""});filters.forEach(id=>fillSelect(id,false))}
-function apply(){filtered=rows.filter(r=>(view!=="STOCK"||r.stock>0)&&(view!=="DEMO"||r.demo>0)&&(view!=="OOS"||r.demo>0&&r.stock<=0)&&($("brand").value==="All"||r.brand===$("brand").value)&&($("model").value==="All"||r.model===$("model").value)&&($("submodel").value==="All"||r.submodel===$("submodel").value)&&($("area").value==="All"||r.area===$("area").value)&&($("shoptype").value==="All"||r.shoptype===$("shoptype").value)&&($("pcflag").value==="All"||r.pc===$("pcflag").value)&&($("productstatus").value==="All"||r.status===$("productstatus").value)&&($("shopcode").value==="All"||r.shopcode===$("shopcode").value)&&($("shopname").value==="All"||r.shopname===$("shopname").value))}
-function saveFilters(){try{localStorage.setItem("interbrandFilters",JSON.stringify({view,values:Object.fromEntries(filters.map(id=>[id,$(id).value]))}))}catch(e){}}
-function restoreFilters(){try{const s=JSON.parse(localStorage.getItem("interbrandFilters")||"{}");if(s.view)view=s.view;if(s.values)filters.forEach(id=>{if(s.values[id]){$(id).value=s.values[id];if($(id).value!==s.values[id])$(id).value="All"}});document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view===view))}catch(e){}}
+
+function selectedValues(id){
+  const s=$(id);
+  return [...s.options].filter(o=>o.selected).map(o=>o.value).filter(v=>v&&v!=="All");
+}
+function hasFilter(id){return selectedValues(id).length>0}
+function matchesFilter(r,id){
+  const vals=selectedValues(id);
+  return !vals.length||vals.includes(r[filterField[id]]);
+}
+function setSelections(id,vals){
+  const want=new Set(Array.isArray(vals)?vals:(vals?[vals]:[]));
+  [...$(id).options].forEach(o=>o.selected=want.has(o.value));
+  updateMultiButton(id);
+}
+function baseForOptions(exceptId){
+  return rows.filter(r=>filters.every(id=>id===exceptId||matchesFilter(r,id)));
+}
+function updateMultiButton(id){
+  const b=document.getElementById(id+"MultiBtn");
+  if(!b)return;
+  const vals=selectedValues(id);
+  if(!vals.length){
+    b.textContent="All";
+    b.classList.remove("hasSelection");
+  }else if(vals.length===1){
+    b.textContent=vals[0];
+    b.classList.add("hasSelection");
+  }else{
+    b.textContent=`${vals.length} selected`;
+    b.title=vals.join(", ");
+    b.classList.add("hasSelection");
+  }
+}
+function renderMultiMenu(id){
+  const menu=document.getElementById(id+"MultiMenu");
+  if(!menu)return;
+  const s=$(id), vals=new Set(selectedValues(id));
+  const options=[...s.options].filter(o=>o.value&&o.value!=="All");
+  menu.innerHTML=`<div class="multiMenuTop"><button type="button" class="multiMini" data-act="all">Select all</button><button type="button" class="multiMini" data-act="clear">Clear</button></div>`+
+    (options.length?options.map(o=>`<label class="multiOption"><input type="checkbox" value="${esc(o.value)}" ${vals.has(o.value)?"checked":""}><span>${esc(o.textContent)}</span></label>`).join(""):`<div class="multiEmpty">No matching options</div>`);
+  menu.querySelectorAll('input[type="checkbox"]').forEach(cb=>cb.onchange=()=>{
+    const chosen=[...menu.querySelectorAll('input[type="checkbox"]:checked')].map(x=>x.value);
+    setSelections(id,chosen);
+    refreshCascades(id);
+    render();
+    renderMultiMenu(id);
+  });
+  menu.querySelector('[data-act="clear"]')?.addEventListener("click",e=>{
+    e.preventDefault(); setSelections(id,[]); refreshCascades(id); render(); renderMultiMenu(id);
+  });
+  menu.querySelector('[data-act="all"]')?.addEventListener("click",e=>{
+    e.preventDefault();
+    setSelections(id,options.map(o=>o.value));
+    refreshCascades(id); render(); renderMultiMenu(id);
+  });
+}
+function setupMultiSelects(){
+  filters.forEach(id=>{
+    const s=$(id);
+    s.multiple=true;
+    const host=s.closest(".filterbox");
+    host.classList.add("multiSelectHost");
+    if(document.getElementById(id+"MultiBtn"))return;
+    const btn=document.createElement("button");
+    btn.type="button"; btn.id=id+"MultiBtn"; btn.className="multiButton"; btn.textContent="All";
+    const menu=document.createElement("div");
+    menu.id=id+"MultiMenu"; menu.className="multiMenu";
+    s.insertAdjacentElement("afterend",btn); btn.insertAdjacentElement("afterend",menu);
+    btn.onclick=e=>{
+      e.stopPropagation();
+      document.querySelectorAll(".multiMenu.open").forEach(m=>{if(m!==menu)m.classList.remove("open")});
+      menu.classList.toggle("open");
+      if(menu.classList.contains("open"))renderMultiMenu(id);
+    };
+    menu.onclick=e=>e.stopPropagation();
+  });
+  document.addEventListener("click",()=>document.querySelectorAll(".multiMenu.open").forEach(m=>m.classList.remove("open")));
+}
+function fillSelect(id,keep=true){
+  const s=$(id),field=filterField[id],cur=keep?selectedValues(id):[],term=norm($(id+"Search")?.value).toLowerCase(),base=baseForOptions(id);
+  let opts=[...new Set(base.map(r=>r[field]).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),"th"));
+  if(term)opts=opts.filter(v=>String(v).toLowerCase().includes(term));
+  const keepSet=new Set(cur.filter(v=>opts.includes(v)));
+  s.innerHTML=opts.map(v=>`<option value="${esc(v)}"${keepSet.has(v)?" selected":""}>${esc(v)}</option>`).join("");
+  updateMultiButton(id);
+  renderMultiMenu(id);
+}
+function refreshCascades(changedId){
+  const order=["brand","model","submodel","area","shoptype","pcflag","productstatus","shopcode","shopname"],i=order.indexOf(changedId);
+  order.forEach((id,j)=>{
+    if(j>i||changedId==="brand"&&["model","submodel"].includes(id)||changedId==="model"&&id==="submodel")fillSelect(id,true)
+  });
+}
+function initFilters(){
+  filters.forEach(id=>{if($(id+"Search"))$(id+"Search").value=""});
+  filters.forEach(id=>fillSelect(id,false));
+}
+function apply(){
+  filtered=rows.filter(r=>
+    (view!=="STOCK"||r.stock>0)&&
+    (view!=="DEMO"||r.demo>0)&&
+    (view!=="OOS"||r.demo>0&&r.stock<=0)&&
+    filters.every(id=>matchesFilter(r,id))
+  );
+}
+function saveFilters(){
+  try{
+    localStorage.setItem("interbrandFilters",JSON.stringify({
+      view,
+      values:Object.fromEntries(filters.map(id=>[id,selectedValues(id)]))
+    }))
+  }catch(e){}
+}
+function restoreFilters(){
+  try{
+    const s=JSON.parse(localStorage.getItem("interbrandFilters")||"{}");
+    if(s.view)view=s.view;
+    if(s.values)filters.forEach(id=>{
+      const saved=s.values[id];
+      if(Array.isArray(saved))setSelections(id,saved);
+      else if(saved&&saved!=="All")setSelections(id,[saved]);
+    });
+    document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view===view))
+  }catch(e){}
+}
 function aggregateStoreModel(list){
  const m=new Map();
  for(const r of list){
@@ -196,7 +330,38 @@ const show=f.slice(0,3000);
 $("tbody").innerHTML=show.map(r=>`<tr><td><span class="brandtag">${esc(r.brand)}</span></td><td>${esc(r.shopcode)}</td><td>${esc(r.shopname)}</td><td>${esc(r.area)}</td><td>${esc(r.shoptype)}</td><td>${esc(r.pc)}</td><td><b>${esc(r.model)}</b></td><td class="num ${r.demo>0?"good":""}">${fmt(r.demo)}</td><td class="num ${r.stock<=0?"bad":""}">${fmt(r.stock)}</td><td><span class="pill ${r.status==="EOL"?"p-eol":r.status==="PRE-EOL"?"p-pre":"p-current"}">${esc(r.status)}</span></td><td class="${r.stock<=0?"bad":"good"}">${r.stock<=0?"OOS":"IN STOCK"}</td></tr>`).join("");
 if(f.length>3000)$("count").textContent+=` • showing first 3,000`
 }
-$("uploadBtn").onclick=()=>{if(isAdmin)$("file").click()};$("file").onchange=e=>{if(isAdmin&&e.target.files[0])loadFile(e.target.files[0]);e.target.value=""};filters.forEach(id=>{$(id).onchange=()=>{refreshCascades(id);render()};const q=$(id+"Search");if(q)q.oninput=()=>fillSelect(id,true)});$("resetBtn").onclick=()=>{filters.forEach(id=>{$(id).value="All";if($(id+"Search"))$(id+"Search").value=""});view="ALL";document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view==="ALL"));initFilters();render()};document.querySelectorAll(".statusBtn").forEach(b=>b.onclick=()=>{$("productstatus").value=b.dataset.status;render()});document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));render()});$("exportBtn").onclick=()=>{apply();
+$("uploadBtn").onclick=()=>{if(isAdmin)$("file").click()};
+$("file").onchange=e=>{if(isAdmin&&e.target.files[0])loadFile(e.target.files[0]);e.target.value=""};
+
+setupMultiSelects();
+
+filters.forEach(id=>{
+  const q=$(id+"Search");
+  if(q)q.oninput=()=>fillSelect(id,true);
+});
+
+$("resetBtn").onclick=()=>{
+  filters.forEach(id=>{
+    setSelections(id,[]);
+    if($(id+"Search"))$(id+"Search").value="";
+  });
+  view="ALL";
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view==="ALL"));
+  initFilters();render();
+};
+
+document.querySelectorAll(".statusBtn").forEach(b=>b.onclick=()=>{
+  setSelections("productstatus",[b.dataset.status]);
+  refreshCascades("productstatus");
+  render();
+});
+
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
+  view=b.dataset.view;
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));
+  render();
+});
+$("exportBtn").onclick=()=>{apply();
  const exportRows=aggregateStoreModel(filtered);
  const data=exportRows.map(r=>({
   "Brand":r.brand,"Shop Code":r.shopcode,"Shop Name":r.shopname,"Area":r.area,"Shop Type":r.shoptype,"PC":r.pc,
