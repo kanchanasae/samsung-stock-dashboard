@@ -22,11 +22,11 @@
 .multiButton{width:100%;margin-top:0;padding:9px 30px 9px 9px;border:1px solid #d5dfea;border-top:0;border-radius:0 0 8px 8px;background:#fff;text-align:left;cursor:pointer;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:relative}
 .multiButton:after{content:"▾";position:absolute;right:10px;top:8px;color:#51657d}
 .multiButton.hasSelection{background:#eef5ff;color:#123054;font-weight:800}
-.multiMenu{display:none;position:absolute;left:0;right:0;top:100%;z-index:30;background:#fff;border:1px solid #cfdbe8;border-radius:9px;box-shadow:0 8px 24px rgba(18,48,84,.16);max-height:250px;overflow:auto;padding:7px;margin-top:3px;min-width:190px}
+.multiMenu{display:none;position:absolute;left:0;right:0;top:100%;z-index:9999;background:#fff;border:1px solid #cfdbe8;border-radius:9px;box-shadow:0 8px 24px rgba(18,48,84,.16);max-height:250px;overflow:auto;padding:7px;margin-top:3px;min-width:190px}
 .multiMenu.open{display:block}
 .multiMenuTop{display:flex;gap:6px;position:sticky;top:-7px;background:#fff;padding:5px 0 7px;border-bottom:1px solid #edf1f5;margin-bottom:4px;z-index:2}
 .multiMini{border:1px solid #d5dfea;background:#f7f9fc;color:#40536a;border-radius:6px;padding:4px 7px;font-size:10px;font-weight:800;cursor:pointer}
-.multiOption{display:flex;align-items:center;gap:7px;padding:6px 4px;border-radius:6px;font-size:11px;font-weight:500;color:#2b3d53;cursor:pointer}
+.multiOption{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;padding:6px 4px;border-radius:6px;font-size:11px;font-weight:500;color:#2b3d53;cursor:pointer}
 .multiOption:hover{background:#f2f6fb}
 .multiOption input{margin:0}
 .multiEmpty{padding:8px;color:#8a97a8;font-size:11px}
@@ -205,9 +205,9 @@ function renderMultiMenu(id){
   const s=$(id), vals=new Set(selectedValues(id));
   const options=[...s.options].filter(o=>o.value&&o.value!=="All");
   menu.innerHTML=`<div class="multiMenuTop"><button type="button" class="multiMini" data-act="all">Select all</button><button type="button" class="multiMini" data-act="clear">Clear</button></div>`+
-    (options.length?options.map(o=>`<label class="multiOption"><input type="checkbox" value="${esc(o.value)}" ${vals.has(o.value)?"checked":""}><span>${esc(o.textContent)}</span></label>`).join(""):`<div class="multiEmpty">No matching options</div>`);
+    (options.length?options.map((o,i)=>`<label class="multiOption"><input type="checkbox" data-idx="${i}" ${vals.has(o.value)?"checked":""}><span>${esc(o.textContent)}</span></label>`).join(""):`<div class="multiEmpty">No matching options</div>`);
   menu.querySelectorAll('input[type="checkbox"]').forEach(cb=>cb.onchange=()=>{
-    const chosen=[...menu.querySelectorAll('input[type="checkbox"]:checked')].map(x=>x.value);
+    const chosen=[...menu.querySelectorAll('input[type="checkbox"]:checked')].map(x=>options[Number(x.dataset.idx)].value);
     setSelections(id,chosen);
     refreshCascades(id);
     render();
