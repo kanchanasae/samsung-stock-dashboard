@@ -273,12 +273,47 @@ function initFilters(){
   filters.forEach(id=>fillSelect(id,false));
 }
 function apply(){
-  filtered=rows.filter(r=>
-    (view!=="STOCK"||r.stock>0)&&
-    (view!=="DEMO"||r.demo>0)&&
-    (view!=="OOS"||r.demo>0&&r.stock<=0)&&
-    filters.every(id=>matchesFilter(r,id))
-  );
+  // Normal views keep the user's selected filters.
+  if(view!=="OOS"){
+    filtered=rows.filter(r=>
+      (view!=="STOCK"||r.stock>0)&&
+      (view!=="DEMO"||r.demo>0)&&
+      filters.every(id=>matchesFilter(r,id))
+    );
+    return;
+  }
+
+  /*
+    Demo + OOS must be evaluated at SHOP + MODEL level, not Submodel/Capacity level.
+
+    Example:
+      A57 5G 8/256GB   stock 0, demo 1
+      A57 5G 12/512GB  stock 2
+    => Model stock = 2, therefore this store is NOT Demo + OOS.
+
+    When Submodel is selected, it is used only to define the store/model scope.
+    OOS qualification still checks stock across ALL capacities of that same model.
+  */
+
+  // 1) Find the Shop + Model keys that are in the user's selected scope,
+  //    including the selected Submodel if any.
+  const scopedRows=rows.filter(r=>filters.every(id=>matchesFilter(r,id)));
+  const scopedKeys=new Set(scopedRows.map(r=>
+    [r.brand,r.shopcode,r.model].map(x=>norm(x).toUpperCase()).join("||")
+  ));
+
+  // 2) Rebuild those same Shop + Model records while deliberately ignoring
+  //    the Submodel filter so stock from every capacity is included.
+  const modelRows=rows.filter(r=>{
+    const key=[r.brand,r.shopcode,r.model].map(x=>norm(x).toUpperCase()).join("||");
+    if(!scopedKeys.has(key))return false;
+    return filters.every(id=>id==="submodel"||matchesFilter(r,id));
+  });
+
+  // 3) Aggregate first, then classify Demo + OOS.
+  //    Store the already-aggregated result in filtered and mark it for render().
+  filtered=aggregateStoreModel(modelRows).filter(r=>r.demo>0&&r.stock<=0);
+  filtered._alreadyAggregated=true;
 }
 function saveFilters(){
   try{
@@ -324,7 +359,7 @@ function aggregateStoreModel(list){
    return a;
  });
 }
-function render(){apply();saveFilters();const raw=filtered;const f=aggregateStoreModel(raw);
+function render(){apply();saveFilters();const raw=filtered;const f=(view==="OOS"&&filtered._alreadyAggregated)?filtered:aggregateStoreModel(raw);
 $("k1").textContent=fmt(f.reduce((s,r)=>s+r.stock,0));
 $("k2").textContent=fmt(new Set(f.filter(r=>r.stock>0).map(r=>r.shopcode)).size);
 $("k3").textContent=fmt(new Set(f.filter(r=>r.demo>0).map(r=>r.shopcode)).size);
@@ -334,7 +369,7 @@ $("k6").textContent=fmt(new Set(f.filter(r=>yes(r.pc)).map(r=>r.shopcode)).size)
 $("count").textContent=fmt(f.length)+" rows";
 $("asof").textContent=latestDate?"Data as of "+latestDate:"";
 $("dataDateBadge").textContent=latestDate?"Data as of: "+latestDate:"Data as of: -";
-$("tableTitle").textContent=view==="OOS"?"Demo + OOS by Store & Model":view==="DEMO"?"Demo by Store & Model":view==="STOCK"?"Stock by Store & Model":"Interbrand Stock by Store & Model";
+$("tableTitle").textContent=view==="OOS"?"Demo + OOS by Store & Model (Model Stock)":view==="DEMO"?"Demo by Store & Model":view==="STOCK"?"Stock by Store & Model":"Interbrand Stock by Store & Model";
 const show=f.slice(0,3000);
 $("tbody").innerHTML=show.map(r=>`<tr><td><span class="brandtag">${esc(r.brand)}</span></td><td>${esc(r.shopcode)}</td><td>${esc(r.shopname)}</td><td>${esc(r.area)}</td><td>${esc(r.shoptype)}</td><td>${esc(r.pc)}</td><td><b>${esc(r.model)}</b></td><td class="num ${r.demo>0?"good":""}">${fmt(r.demo)}</td><td class="num ${r.stock<=0?"bad":""}">${fmt(r.stock)}</td><td><span class="pill ${r.status==="EOL"?"p-eol":r.status==="PRE-EOL"?"p-pre":"p-current"}">${esc(r.status)}</span></td><td class="${r.stock<=0?"bad":"good"}">${r.stock<=0?"OOS":"IN STOCK"}</td></tr>`).join("");
 if(f.length>3000)$("count").textContent+=` • showing first 3,000`
