@@ -24,8 +24,8 @@
 .multiButton.hasSelection{background:#eef5ff;color:#123054;font-weight:800}
 .multiMenu{display:none;position:absolute;left:0;right:0;top:100%;z-index:9999;background:#fff;border:1px solid #cfdbe8;border-radius:9px;box-shadow:0 8px 24px rgba(18,48,84,.16);max-height:250px;overflow:auto;padding:7px;margin-top:3px;min-width:190px}
 .multiMenu.open{display:block}
-.multiMenuTop{display:flex;gap:6px;position:sticky;top:-7px;background:#fff;padding:5px 0 7px;border-bottom:1px solid #edf1f5;margin-bottom:4px;z-index:2}
-.multiMini{border:1px solid #d5dfea;background:#f7f9fc;color:#40536a;border-radius:6px;padding:4px 7px;font-size:10px;font-weight:800;cursor:pointer}
+.multiMenuTop{display:flex;gap:6px;align-items:center;position:sticky;top:-7px;background:#fff;padding:5px 0 7px;border-bottom:1px solid #edf1f5;margin-bottom:4px;z-index:2}
+.multiMini{border:1px solid #d5dfea;background:#f7f9fc;color:#40536a;border-radius:6px;padding:5px 7px;font-size:10px;font-weight:800;cursor:pointer}.multiApply{margin-left:auto;border:1px solid #0f6bdc;background:#0f6bdc;color:#fff;border-radius:6px;padding:5px 9px;font-size:10px;font-weight:900;cursor:pointer}
 .multiOption{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;padding:6px 4px;border-radius:6px;font-size:11px;font-weight:500;color:#2b3d53;cursor:pointer}
 .multiOption:hover{background:#f2f6fb}
 .multiOption input{margin:0}
@@ -68,7 +68,7 @@ function setupMode(){
     $("centralBtn").classList.add("hidden");
     $("modeBadge").textContent="Viewer";
     $("modeBadge").className="modebadge mode-viewer";
-    $("subtitle").textContent="All Interbrand • Shared Central Data • Filter / Search / Export Excel";
+    $("subtitle").textContent="All Interbrand • Shared Central Data • Multi-select: เลือกหลายรายการแล้วกด Apply • Export Excel";
     $("status").textContent="กำลังโหลด Central Data…";
   }
 }
@@ -204,22 +204,31 @@ function renderMultiMenu(id){
   if(!menu)return;
   const s=$(id), vals=new Set(selectedValues(id));
   const options=[...s.options].filter(o=>o.value&&o.value!=="All");
-  menu.innerHTML=`<div class="multiMenuTop"><button type="button" class="multiMini" data-act="all">Select all</button><button type="button" class="multiMini" data-act="clear">Clear</button></div>`+
+  menu.innerHTML=`<div class="multiMenuTop">
+      <button type="button" class="multiMini" data-act="all">Select all</button>
+      <button type="button" class="multiMini" data-act="clear">Clear</button>
+      <button type="button" class="multiApply" data-act="apply">Apply</button>
+    </div>`+
     (options.length?options.map((o,i)=>`<label class="multiOption"><input type="checkbox" data-idx="${i}" ${vals.has(o.value)?"checked":""}><span>${esc(o.textContent)}</span></label>`).join(""):`<div class="multiEmpty">No matching options</div>`);
-  menu.querySelectorAll('input[type="checkbox"]').forEach(cb=>cb.onchange=()=>{
-    const chosen=[...menu.querySelectorAll('input[type="checkbox"]:checked')].map(x=>options[Number(x.dataset.idx)].value);
-    setSelections(id,chosen);
-    refreshCascades(id);
-    render();
-    renderMultiMenu(id);
-  });
+  // Fast mode: ticking boxes does NOT rebuild the 3,000-row table.
+  // Changes are committed only once when Apply is pressed.
   menu.querySelector('[data-act="clear"]')?.addEventListener("click",e=>{
-    e.preventDefault(); setSelections(id,[]); refreshCascades(id); render(); renderMultiMenu(id);
+    e.preventDefault();
+    menu.querySelectorAll('input[type="checkbox"]').forEach(x=>x.checked=false);
   });
   menu.querySelector('[data-act="all"]')?.addEventListener("click",e=>{
     e.preventDefault();
-    setSelections(id,options.map(o=>o.value));
-    refreshCascades(id); render(); renderMultiMenu(id);
+    menu.querySelectorAll('input[type="checkbox"]').forEach(x=>x.checked=true);
+  });
+  menu.querySelector('[data-act="apply"]')?.addEventListener("click",e=>{
+    e.preventDefault();
+    const chosen=[...menu.querySelectorAll('input[type="checkbox"]:checked')]
+      .map(x=>options[Number(x.dataset.idx)]?.value)
+      .filter(Boolean);
+    setSelections(id,chosen);
+    menu.classList.remove("open");
+    refreshCascades(id);
+    render();
   });
 }
 function setupMultiSelects(){
