@@ -15,10 +15,10 @@
 .btn-pre:hover{background:#fff0c7!important}
 .btn-eol:hover{background:#ffe3e6!important}
 .btn-export:hover{background:#dff1e6!important}
-.active{background:var(--navy)!important;color:#fff!important}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.tab{background:#edf3fa;color:#294765;border:0;border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer}.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin:14px 0}.card{border-radius:14px;padding:14px;border-left:5px solid var(--blue)}.card.green{border-left-color:var(--green)}.card.red{border-left-color:var(--red)}.card.amber{border-left-color:var(--amber)}.k{font-size:10px;font-weight:800;color:#6c7d93;text-transform:uppercase}.v{font-size:27px;font-weight:900;color:var(--navy);margin:7px 0 2px}.s{font-size:10px;color:#8995a5}.section{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.section h2{font-size:16px;margin:0}.tablewrap{overflow:auto;max-height:600px;border:1px solid var(--line);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:1320px;font-size:10px}th{position:sticky;top:0;background:#edf3f9;color:#40536a;text-align:left;padding:8px 6px;white-space:nowrap;z-index:2}td{padding:7px 6px;border-top:1px solid #edf1f5}.num{text-align:right;font-weight:800}.bad{color:var(--red);font-weight:900}.good{color:var(--green);font-weight:900}.pill{display:inline-block;padding:2px 6px;border-radius:999px;font-size:9px;font-weight:900}.p-current{background:#edf7f2;color:#157a55}.p-pre{background:#fff7e7;color:#a86600}.p-eol{background:#fff0f2;color:#b52638}.hidden{display:none}.progress{margin-top:8px;height:6px;background:#e8eef5;border-radius:999px;overflow:hidden}.progress>div{height:100%;width:0;background:var(--blue);transition:width .2s}.small{font-size:11px;color:#738399}.brandtag{display:inline-block;background:#eef4fb;color:#123054;border-radius:999px;padding:2px 7px;font-weight:800}@media(max-width:1100px){.filters{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.top{flex-direction:column;align-items:flex-start}}
+.active{background:var(--navy)!important;color:#fff!important}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.tab{background:#edf3fa;color:#294765;border:0;border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer}.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin:14px 0}.card{border-radius:14px;padding:14px;border-left:5px solid var(--blue)}.card.green{border-left-color:var(--green)}.card.red{border-left-color:var(--red)}.card.amber{border-left-color:var(--amber)}.k{font-size:10px;font-weight:800;color:#6c7d93;text-transform:uppercase}.v{font-size:27px;font-weight:900;color:var(--navy);margin:7px 0 2px}.s{font-size:10px;color:#8995a5}.section{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.section h2{font-size:16px;margin:0}.tablewrap{overflow:auto;max-height:600px;border:1px solid var(--line);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:1320px;font-size:10px}th{position:sticky;top:0;background:#edf3f9;color:#40536a;text-align:left;padding:8px 6px;white-space:nowrap;z-index:2}td{padding:7px 6px;border-top:1px solid #edf1f5}.num{text-align:right;font-weight:800}.bad{color:var(--red);font-weight:900}.good{color:var(--green);font-weight:900}.pill{display:inline-block;padding:2px 6px;border-radius:999px;font-size:9px;font-weight:900}.p-current{background:#edf7f2;color:#157a55}.p-pre{background:#fff7e7;color:#a86600}.p-eol{background:#fff0f2;color:#b52638}.hidden{display:none}.progress{margin-top:8px;height:6px;background:#e8eef5;border-radius:999px;overflow:hidden}.progress>div{height:100%;width:0;background:var(--blue);transition:width .2s}.small{font-size:11px;color:#738399}.brandtag{display:inline-block;background:#eef4fb;color:#123054;border-radius:999px;padding:2px 7px;font-weight:800}.modebadge{display:inline-flex;align-items:center;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900;margin-left:8px}.mode-admin{background:#fff3cd;color:#8a5a00;border:1px solid #f0d889}.mode-viewer{background:#edf7f2;color:#157a55;border:1px solid #bfe5cf}.admin-download{background:#fff3cd!important;color:#8a5a00!important;border:1px solid #f0d889!important}@media(max-width:1100px){.filters{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.top{flex-direction:column;align-items:flex-start}}
 </style></head><body><div class="wrap">
-<div class="top"><div><h1>Interbrand Stock & Demo Dashboard</h1><div class="sub">All Interbrand • Auto exclude iPhone & iPad • Upload Daily Stock Excel ได้เอง • ใช้ Latest Stock Date อัตโนมัติ</div></div><div><input id="file" type="file" accept=".xlsx,.xls,.xlsb" hidden><button class="upload" id="uploadBtn">↻ Upload / Refresh Data</button> <button class="btn light hidden" id="centralBtn" title="สำหรับ Admin: สร้างไฟล์ข้อมูลกลางหลัง Upload Excel">Download Central Data</button><span id="dataDateBadge" class="datebadge">Data as of: -</span><span id="status" class="status">พร้อมรับไฟล์ Daily Stock</span></div></div>
-<div id="welcome" class="notice"><b>เริ่มใช้งาน:</b> กด <b>Upload / Refresh Data</b> แล้วเลือกไฟล์ Daily Stock ระบบจะอ่าน Sheet <b>DATA</b> (ถ้ามี), เลือกวันที่ล่าสุด และตัด iPhone / iPad ออกอัตโนมัติ ข้อมูลประมวลผลใน Browser เท่านั้น ไม่ได้อัปโหลด Excel ขึ้น GitHub</div>
+<div class="top"><div><h1>Interbrand Stock & Demo Dashboard</h1><div class="sub" id="subtitle">All Interbrand • Auto exclude iPhone & iPad • Shared Central Data</div></div><div><input id="file" type="file" accept=".xlsx,.xls,.xlsb" hidden><button class="upload hidden" id="uploadBtn">↻ Upload / Refresh Data</button> <button class="btn light admin-download hidden" id="centralBtn" title="สำหรับ Admin: สร้าง data.json หลัง Upload Excel">⬇ Download Central Data</button><span id="modeBadge" class="modebadge mode-viewer">Viewer</span><span id="dataDateBadge" class="datebadge">Data as of: -</span><span id="status" class="status">กำลังโหลด Central Data…</span></div></div>
+<div id="welcome" class="notice"><b>Viewer Mode:</b> ข้อมูลจะอ่านจาก <b>data.json</b> กลางอัตโนมัติ สามารถ Filter และ Export Excel ได้ โดยไม่สามารถเปลี่ยน Central Data</div>
 <div id="progressBox" class="panel hidden"><b id="progressText">กำลังอ่านไฟล์…</b><div class="progress"><div id="bar"></div></div></div>
 <div id="app" class="hidden"><div class="tabs"><button class="tab active" data-view="ALL">Overview</button><button class="tab" data-view="STOCK">Stock</button><button class="tab" data-view="DEMO">Demo</button><button class="tab" data-view="OOS">Demo + OOS</button></div>
 <div class="panel"><div class="filters">
@@ -35,7 +35,29 @@
 <div class="cards"><div class="card"><div class="k">Total Sellable Stock</div><div class="v" id="k1">0</div><div class="s">Latest stock date</div></div><div class="card green"><div class="k">Stores with Stock</div><div class="v" id="k2">0</div><div class="s">Unique shops stock &gt; 0</div></div><div class="card"><div class="k">Demo Required Stores</div><div class="v" id="k3">0</div><div class="s">PRODUCT_TYPE = DEMO</div></div><div class="card red"><div class="k">Demo OOS Stores</div><div class="v" id="k4">0</div><div class="s">Demo exists + Sellable = 0</div></div><div class="card amber"><div class="k">EOL / Pre-EOL Stock</div><div class="v" id="k5">0</div><div class="s">Sellable stock</div></div><div class="card"><div class="k">PC Stores</div><div class="v" id="k6">0</div><div class="s">PC = YES</div></div></div>
 <div class="panel"><div class="section"><h2 id="tableTitle">Interbrand Stock by Store & Model</h2><div><span class="small" id="asof"></span> &nbsp; <b id="count">0 rows</b></div></div><div class="tablewrap"><table><thead><tr><th>Brand</th><th>Shop Code</th><th>Shop Name</th><th>Area</th><th>Shop Type</th><th>PC</th><th>Model</th><th>Demo Qty</th><th>Sellable Stock</th><th>Product Status</th><th>Stock Status</th></tr></thead><tbody id="tbody"></tbody></table></div></div></div></div>
 <script>
-"use strict";const $=id=>document.getElementById(id),fmt=n=>(Number(n)||0).toLocaleString("en-US");
+"use strict";
+const $=id=>document.getElementById(id),fmt=n=>(Number(n)||0).toLocaleString("en-US");
+const params=new URLSearchParams(location.search);
+const isAdmin=["1","true","yes"].includes((params.get("admin")||"").toLowerCase());
+
+function setupMode(){
+  if(isAdmin){
+    $("uploadBtn").classList.remove("hidden");
+    $("modeBadge").textContent="Admin";
+    $("modeBadge").className="modebadge mode-admin";
+    $("subtitle").textContent="ADMIN • Upload Daily Stock • Validate • Download data.json • Shared Central Data";
+    $("welcome").innerHTML="<b>Admin Mode:</b> กด <b>Upload / Refresh Data</b> เพื่อเลือก Daily Stock ล่าสุด → ตรวจสอบ Data as of / KPI → กด <b>Download Central Data</b> เพื่อสร้างไฟล์ <b>data.json</b> สำหรับนำไป Replace บน GitHub";
+    $("status").textContent="Admin Mode • กำลังโหลด Central Data…";
+  }else{
+    $("uploadBtn").classList.add("hidden");
+    $("centralBtn").classList.add("hidden");
+    $("modeBadge").textContent="Viewer";
+    $("modeBadge").className="modebadge mode-viewer";
+    $("subtitle").textContent="All Interbrand • Shared Central Data • Filter / Search / Export Excel";
+    $("status").textContent="กำลังโหลด Central Data…";
+  }
+}
+
 const aliases={brand:["CUSTOM_BRAND","BRAND","BRAND_NAME"],model:["MODEL","CUSTOM_MODEL","MODEL_NAME"],submodel:["CUSTOM_SUBMODEL","SUBMODEL","SUB_MODEL","PRODUCT_DESC","PRODUCT_DESCRIPTION"],shopcode:["SHOP_CODE","SHOPCODE","STORE_CODE"],shopname:["SHOP_NAME","SHOPNAME","STORE_NAME"],shoptype:["SHOP_TYPE","SHOPTYPE","STORE_TYPE"],area:["ZONE","AREA","REGION","AREA_NAME"],pc:["PC","PC_FLAG","PC_STATUS"],status:["PRODUCT_STATUS","STATUS","PRODUCTSTATUS"],balance:["BALANCE","STOCK_QTY","QTY","SHOP_QTY","ON_HAND"],date:["STOCK_DATE","DATE","DATA_DATE","AS_OF_DATE"],demo:["DEMO_FLAG","DEMO","IS_DEMO","DEMO_STATUS"],productType:["PRODUCT_TYPE","TYPE","CATEGORY","PRODUCT_CATEGORY"]};
 let rows=[],filtered=[],view="ALL",latestDate="";const filters=["brand","model","submodel","area","shoptype","pcflag","productstatus","shopcode","shopname"];
 function norm(v){return String(v??"").trim()}function key(v){return norm(v).toUpperCase().replace(/[^A-Z0-9]+/g,"_").replace(/^_|_$/g,"")}function pick(map,name){for(const a of aliases[name])if(map[key(a)]!==undefined)return map[key(a)];return-1}function val(row,i){if(i<0||!row||!row[i])return"";const c=row[i];return c.v!==undefined?c.v:c}function yes(v){return["Y","YES","1","TRUE","DEMO","PC","ACTIVE"].includes(norm(v).toUpperCase())}function statusNorm(v){const x=norm(v).toUpperCase().replace(/_/g,"-");if(x.includes("PRE")&&x.includes("EOL"))return"PRE-EOL";if(x.includes("EOL"))return"EOL";return x||"CURRENT"}function inferModel(submodel,brand){let x=norm(submodel).replace(/\s+/g," ");if(!x)return"";x=x.replace(/\s+\d+\s*\/\s*\d+\s*(?:GB|TB)\b.*$/i,"");x=x.replace(/\s+\d+\s*(?:GB|TB)\b.*$/i,"");x=x.replace(/\s+(?:RAM|ROM)\s*[:=]?\s*\d+.*$/i,"");return x.trim()||norm(submodel)}
@@ -100,6 +122,7 @@ setProgress(`เสร็จแล้ว ${rows.length.toLocaleString()} aggrega
 setTimeout(()=>$("progressBox").classList.add("hidden"),500);
 $("welcome").classList.add("hidden");$("app").classList.remove("hidden");
 $("status").textContent=`${file.name} • ${latestDate||"Latest data"} • ${rows.length.toLocaleString()} rows`;
+if(isAdmin)$("centralBtn").classList.remove("hidden");
 initFilters();render();
 }catch(e){console.error(e);$("status").textContent="อ่านไฟล์ไม่สำเร็จ";setProgress("เกิดข้อผิดพลาด: "+e.message,100);alert("อ่านไฟล์ไม่สำเร็จ\n\n"+e.message)}}
 
@@ -114,7 +137,7 @@ async function loadCentralData(){
    $("status").textContent=`Shared Central Data • ${latestDate||"Latest"} • ${rows.length.toLocaleString()} rows`;
    initFilters();restoreFilters();render();
  }catch(e){
-   $("status").textContent="ยังไม่มี Central Data • Admin สามารถ Upload Daily Stock ได้";
+   $("status").textContent=isAdmin?"ยังไม่มี Central Data • Upload Daily Stock เพื่อสร้าง data.json":"ยังไม่มี Central Data กรุณาติดต่อ Admin";
  }
 }
 
@@ -173,7 +196,7 @@ const show=f.slice(0,3000);
 $("tbody").innerHTML=show.map(r=>`<tr><td><span class="brandtag">${esc(r.brand)}</span></td><td>${esc(r.shopcode)}</td><td>${esc(r.shopname)}</td><td>${esc(r.area)}</td><td>${esc(r.shoptype)}</td><td>${esc(r.pc)}</td><td><b>${esc(r.model)}</b></td><td class="num ${r.demo>0?"good":""}">${fmt(r.demo)}</td><td class="num ${r.stock<=0?"bad":""}">${fmt(r.stock)}</td><td><span class="pill ${r.status==="EOL"?"p-eol":r.status==="PRE-EOL"?"p-pre":"p-current"}">${esc(r.status)}</span></td><td class="${r.stock<=0?"bad":"good"}">${r.stock<=0?"OOS":"IN STOCK"}</td></tr>`).join("");
 if(f.length>3000)$("count").textContent+=` • showing first 3,000`
 }
-$("uploadBtn").onclick=()=>$("file").click();$("file").onchange=e=>{if(e.target.files[0])loadFile(e.target.files[0]);e.target.value=""};filters.forEach(id=>{$(id).onchange=()=>{refreshCascades(id);render()};const q=$(id+"Search");if(q)q.oninput=()=>fillSelect(id,true)});$("resetBtn").onclick=()=>{filters.forEach(id=>{$(id).value="All";if($(id+"Search"))$(id+"Search").value=""});view="ALL";document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view==="ALL"));initFilters();render()};document.querySelectorAll(".statusBtn").forEach(b=>b.onclick=()=>{$("productstatus").value=b.dataset.status;render()});document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));render()});$("exportBtn").onclick=()=>{apply();
+$("uploadBtn").onclick=()=>{if(isAdmin)$("file").click()};$("file").onchange=e=>{if(isAdmin&&e.target.files[0])loadFile(e.target.files[0]);e.target.value=""};filters.forEach(id=>{$(id).onchange=()=>{refreshCascades(id);render()};const q=$(id+"Search");if(q)q.oninput=()=>fillSelect(id,true)});$("resetBtn").onclick=()=>{filters.forEach(id=>{$(id).value="All";if($(id+"Search"))$(id+"Search").value=""});view="ALL";document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view==="ALL"));initFilters();render()};document.querySelectorAll(".statusBtn").forEach(b=>b.onclick=()=>{$("productstatus").value=b.dataset.status;render()});document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));render()});$("exportBtn").onclick=()=>{apply();
  const exportRows=aggregateStoreModel(filtered);
  const data=exportRows.map(r=>({
   "Brand":r.brand,"Shop Code":r.shopcode,"Shop Name":r.shopname,"Area":r.area,"Shop Type":r.shoptype,"PC":r.pc,
@@ -193,6 +216,7 @@ $("uploadBtn").onclick=()=>$("file").click();$("file").onchange=e=>{if(e.target.
  const sws=XLSX.utils.aoa_to_sheet(summary);XLSX.utils.book_append_sheet(wb,sws,"Summary");
  XLSX.writeFile(wb,`Interbrand_Stock_Demo_${latestDate||"latest"}.xlsx`);
 };
-$("centralBtn").onclick=downloadCentralData;
+$("centralBtn").onclick=()=>{if(isAdmin)downloadCentralData()};
+setupMode();
 loadCentralData();
 </script></body></html>
